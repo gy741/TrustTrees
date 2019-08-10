@@ -7,6 +7,7 @@ import os
 import random
 import subprocess
 import time
+import re
 from collections import defaultdict
 
 import dns.flags
@@ -82,6 +83,10 @@ ROOT_SERVERS = (
         'hostname': 'm.root-servers.net.',
     },
 )
+awscheck = False
+redcheck = ""
+yellowcheck = ""
+orangecheck = ""
 
 DNS_WATCH_RESOLVER = '84.200.69.80'
 DOMAIN_AVAILABILITY_CACHE = {}
@@ -188,6 +193,7 @@ def can_register_with_gandi_api_v5(input_domain):
 
 
 def is_domain_available(input_domain):
+    global awscheck
     """
     Called if Gandi API key is provided.
 
@@ -200,6 +206,10 @@ def is_domain_available(input_domain):
         return DOMAIN_AVAILABILITY_CACHE[input_domain]
 
     print('[ STATUS ] Checking if ' + input_domain + ' is available...')
+    
+    if re.match('.*awsdns.*' , input_domain):
+        awscheck = True
+
 
     if GANDI_API_V4_KEY:
         domain_available = can_register_with_gandi_api_v4(input_domain)
@@ -536,7 +546,8 @@ def draw_graph_from_cache(target_hostname):
 
 def get_graph_data_for_ns_result(ns_list, ns_result):
     return_graph_data_string = ''
-
+    global redcheck, orangecheck, yellowcheck
+    
     for ns_rrset in ns_list:
         potential_edge = (
             ns_result['nameserver_hostname'] + '->' + ns_rrset['ns_hostname']
@@ -585,6 +596,7 @@ def get_graph_data_for_ns_result(ns_list, ns_result):
                     RED,
                 )
             )
+            redcheck = "red_"
 
         base_domain = get_base_domain(ns_hostname)
         if (
@@ -612,6 +624,7 @@ def get_graph_data_for_ns_result(ns_list, ns_result):
                         ORANGE,
                     )
                 )
+                yellowcheck = "orange_"
 
     # Make nodes for DNS error states encountered like NXDOMAIN, Timeout, etc.
     for query_error in QUERY_ERROR_LIST:
@@ -642,6 +655,7 @@ def get_graph_data_for_ns_result(ns_list, ns_result):
                     YELLOW,
                 )
             )
+            yellowcheck = "yellow_"
 
     return return_graph_data_string
 
@@ -757,6 +771,8 @@ if __name__ == '__main__':
             for extension in
             args.export_formats.split(',')
         ]
+        
+        target_hostname = redcheck + orangecheck + yellowcheck + target_hostname
         output_graph_file = './output/{}_trust_tree_graph.'.format(
             target_hostname,
         )
