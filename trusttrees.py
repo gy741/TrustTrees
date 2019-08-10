@@ -794,4 +794,5 @@ if __name__ == '__main__':
         redcheck = ""
         orangecheck = ""
         yellowcheck = ""
+        awscheck = ""
         print('[ SUCCESS ] Finished generating graph!')
