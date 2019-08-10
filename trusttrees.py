@@ -791,5 +791,7 @@ if __name__ == '__main__':
             if args.open:
                 print('[ STATUS ] Opening final graph...')
                 subprocess.call(['open', file_name])
-        redcheck, orangecheck, yellowcheck = ""
+        redcheck = ""
+        orangecheck = ""
+        yellowcheck = ""
         print('[ SUCCESS ] Finished generating graph!')
