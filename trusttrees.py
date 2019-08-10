@@ -772,13 +772,14 @@ if __name__ == '__main__':
             args.export_formats.split(',')
         ]
         
-        target_hostname = redcheck + orangecheck + yellowcheck + target_hostname
-        output_graph_file = './output/{}_trust_tree_graph.'.format(
-            target_hostname,
-        )
         # Render graph image
         grapher = pygraphviz.AGraph(
             draw_graph_from_cache(target_hostname),
+        )
+        
+        target_hostname = redcheck + orangecheck + yellowcheck + target_hostname
+        output_graph_file = './output/{}_trust_tree_graph.'.format(
+            target_hostname,
         )
 
         for export_format in export_formats:
