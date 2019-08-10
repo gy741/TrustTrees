@@ -626,7 +626,7 @@ def get_graph_data_for_ns_result(ns_list, ns_result):
                         ORANGE,
                     )
                 )
-                yellowcheck = "orange_"
+                orangecheck = "orange_"
 
     # Make nodes for DNS error states encountered like NXDOMAIN, Timeout, etc.
     for query_error in QUERY_ERROR_LIST:
@@ -701,6 +701,7 @@ def print_logo():
 
 
 if __name__ == '__main__':
+    global redcheck, orangecheck, yellowcheck
     parser = argparse.ArgumentParser(
         description="Graph out a domain's DNS delegation chain and trust trees!",
     )
@@ -790,5 +791,5 @@ if __name__ == '__main__':
             if args.open:
                 print('[ STATUS ] Opening final graph...')
                 subprocess.call(['open', file_name])
-
+        redcheck, orangecheck, yellowcheck = ""
         print('[ SUCCESS ] Finished generating graph!')
