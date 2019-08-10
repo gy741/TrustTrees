@@ -23,6 +23,12 @@ gandi_api_v4 = xmlrpclib.ServerProxy(uri='https://rpc.gandi.net/xmlrpc/')
 GANDI_API_V4_KEY = ''
 GANDI_API_V5_KEY = ''
 
+awscheck = ""
+redcheck = ""
+yellowcheck = ""
+orangecheck = ""
+
+
 BLUE = '#0099ff'
 GRAY = '#a3a3a3'
 RED = '#ff0000'
@@ -83,10 +89,6 @@ ROOT_SERVERS = (
         'hostname': 'm.root-servers.net.',
     },
 )
-awscheck = False
-redcheck = ""
-yellowcheck = ""
-orangecheck = ""
 
 DNS_WATCH_RESOLVER = '84.200.69.80'
 DOMAIN_AVAILABILITY_CACHE = {}
@@ -208,7 +210,7 @@ def is_domain_available(input_domain):
     print('[ STATUS ] Checking if ' + input_domain + ' is available...')
     
     if re.match('.*awsdns.*' , input_domain):
-        awscheck = True
+        awscheck = "awscheck_"
 
 
     if GANDI_API_V4_KEY:
@@ -777,7 +779,7 @@ if __name__ == '__main__':
             draw_graph_from_cache(target_hostname),
         )
         
-        target_hostname = redcheck + orangecheck + yellowcheck + target_hostname
+        target_hostname = awscheck + redcheck + orangecheck + yellowcheck + target_hostname
         output_graph_file = './output/{}_trust_tree_graph.'.format(
             target_hostname,
         )
