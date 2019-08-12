@@ -552,7 +552,9 @@ def draw_graph_from_cache(target_hostname):
 
 def get_graph_data_for_ns_result(ns_list, ns_result):
     return_graph_data_string = ''
-    global redcheck, orangecheck, yellowcheck
+    global redcheck
+    global orangecheck
+    global yellowcheck
     
     for ns_rrset in ns_list:
         potential_edge = (
