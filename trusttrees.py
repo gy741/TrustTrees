@@ -27,6 +27,7 @@ awscheck = ""
 redcheck = ""
 yellowcheck = ""
 orangecheck = ""
+vulnrecord = ""
 
 
 BLUE = '#0099ff'
@@ -323,6 +324,8 @@ def _ns_query(hostname, nameserver_ip, nameserver_hostname):
             'nameserver_hostname': 'g.root-servers.net.'
         }
     """
+    
+    global vulnrecord
     print(
         "[ STATUS ] Querying nameserver '{}/{}' for NS of '{}'".format(
             nameserver_ip,
@@ -351,6 +354,7 @@ def _ns_query(hostname, nameserver_ip, nameserver_hostname):
     except dns.resolver.NoNameservers:
         # TODO: This fucking blows, figure out a way to do this without an exception
         dns_query_error = 'FATAL_ERROR'
+        vulnrecord = dns_query_error
         return_dict['rcode'] = -1
     except dns.resolver.NXDOMAIN:
         dns_query_error = 'NXDOMAIN'
@@ -780,7 +784,7 @@ if __name__ == '__main__':
             draw_graph_from_cache(target_hostname),
         )
         
-        target_hostname = awscheck + redcheck + orangecheck + yellowcheck + target_hostname
+        target_hostname = awscheck + redcheck + orangecheck + yellowcheck + vulnrecord +target_hostname
         output_graph_file = './output/{}_trust_tree_graph.'.format(
             target_hostname,
         )
