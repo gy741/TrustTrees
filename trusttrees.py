@@ -707,10 +707,6 @@ def print_logo():
 
 
 if __name__ == '__main__':
-    global redcheck
-    global orangecheck
-    global ellowcheck
-    global vulnrecord
     
     parser = argparse.ArgumentParser(
         description="Graph out a domain's DNS delegation chain and trust trees!",
