@@ -354,7 +354,7 @@ def _ns_query(hostname, nameserver_ip, nameserver_hostname):
     except dns.resolver.NoNameservers:
         # TODO: This fucking blows, figure out a way to do this without an exception
         dns_query_error = 'FATAL_ERROR'
-        vulnrecord = dns_query_error
+        vulnrecord = 'FATAL_ERROR_'
         return_dict['rcode'] = -1
     except dns.resolver.NXDOMAIN:
         dns_query_error = 'NXDOMAIN'
